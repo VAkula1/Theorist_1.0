@@ -1,0 +1,11 @@
+{
+    "description": null,
+    "headers": [
+        "MathClass.h",
+        "Actions.h"
+    ],
+    "name": "Theorist_1.0",
+    "sources": [
+        "main.cpp"
+    ]
+}
