@@ -319,15 +319,15 @@ bool Aiming(int mode){/////////////////////////////////////////////////
        }
        if (xOk && yOk){
            toRet=true;
-           mur.shoot();
        }
    else if(mode=2){
-       if(r>5){
-       toRet = true;
-       cout<<"true"<<endl;
+       if(x<165&&x>155){
+           toRet = true;
+           cout<<"true"<<endl;
            }
-       else {toRet=false;
-       cout<<"false"<<endl;
+       else {
+           toRet=false;
+           cout<<"false"<<endl;
             }
        }
        return toRet;        
