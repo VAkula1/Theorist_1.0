@@ -242,6 +242,7 @@ bool Aiming(int mode){/////////////////////////////////////////////////
       cerr<<"Image empty"<<endl;
       toRet=false;
    } 
+   Mat yellow= inPic.clone();
    cvtColor(yellow, yellow, CV_BGR2HSV);
    int dopPowerA;
    int dopPowerB;
