@@ -5,7 +5,23 @@
 using namespace std;
 using namespace cv;
 
+    void init(){
+    int  tmp = mur.getInputAOne();
+    tmp = mur.getYaw();
+    //mur.initCamera(1);
+    Mat img= mur.getCameraOneFrame();
+    sleepFor(100);
+    for (int i=0 ;i<5;i++){
+        img= mur.getCameraOneFrame();  
+        }
+    //mur.initCamera(2);
+    img= mur.getCameraTwoFrame();
+    sleepFor(100);
+    for (int i=0 ;i<5;i++){
+        img= mur.getCameraTwoFrame();  
+        }
     
+}
     
     
     void keepDeep(int wish){ 
@@ -219,32 +235,31 @@ bool GateBool(){
        return toRet;
     }        
    
-bool Aiming(){/////////////////////////////////////////////////
+bool Aiming(int mode){/////////////////////////////////////////////////
    bool toRet=false;
     Mat inPic = mur.getCameraTwoFrame();
    if (inPic.empty()){
       cerr<<"Image empty"<<endl;
       toRet=false;
    } 
-   Mat green= inPic.clone();
-   cvtColor(green, green, CV_BGR2HSV);
+   cvtColor(yellow, yellow, CV_BGR2HSV);
    int dopPowerA;
    int dopPowerB;
    int dopPowerC;
    Scalar using_upper;
    Scalar using_lower;
-   Scalar upper_yellow(34,255,255);
-   Scalar lower_yellow(17,0,236);
+   Scalar upper_yellow(38,255,255);
+   Scalar lower_yellow(27,217,144);
    
    using_upper=upper_yellow;
    using_lower=lower_yellow;
    
-   inRange(green,using_lower,using_upper,green);
-   GaussianBlur(green, green, Size(5, 5), 2);
+   inRange(yellow,using_lower,using_upper,yellow);
+   GaussianBlur(yellow, yellow, Size(5, 5), 2);
    
-   imshow("Centreting",green);
+   imshow("Centreting",yellow);
    vector < vector <Point>> contours;
-   findContours(green,contours,CV_RETR_TREE,CV_CHAIN_APPROX_NONE);
+   findContours(yellow,contours,CV_RETR_TREE,CV_CHAIN_APPROX_NONE);
    
    
    for (size_t i=0;i<contours.size();i++){
@@ -256,12 +271,12 @@ bool Aiming(){/////////////////////////////////////////////////
        approxPolyDP(hull,hull,15,true);
         
        RotatedRect bEllipse = fitEllipse(contours.at(i));
-       //Rect rect = boundingRect(contours[i]);
+       Rect rect = boundingRect(contours[i]);
        int x = (int)bEllipse.center.x;
        int y = (int)bEllipse.center.y;
-       //int r = (int)rect.width/2;
+       int r = (int)rect.width/2;
        //int angle =bEllipse.angle;
-       int dOk = 0;
+       
         
        if (hull.size()<8){
            putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
@@ -272,44 +287,48 @@ bool Aiming(){/////////////////////////////////////////////////
        bool xOk=false;
        bool yOk=false;
        imshow("inPic",inPic);
-    if(dOk==0){
-           if (y<115){
-           mur.setPortC(-10);
-           //cout<<"y<115"<<endl;
-       }
-       else if (y>125){
-           mur.setPortC(25);
-           //cout<<"y>125"<<endl;
+   if(r>5&&mode==1){
+       if (x>165){
+           mur.setPortA(-1);
+           mur.setPortB(1);
+           xOk=false;
            }
+       else if (x<155){
+           mur.setPortA(1);
+           mur.setPortB(-1);
+           xOk=false;
+            }
        else {
-           mur.setPortC(0);
-           dOk = mur.getInputAOne();
-           keepDeep(dOk);
-           yOk=true;
-           //cout<<dOk<<endl;
-       }
-    }
-    if(dOk!=0){
-        keepDeep(dOk);
-           if (x<145){
-            mur.setPortA(2);
-            mur.setPortB(-2);
-        }
-        else if (x>175){
-            mur.setPortA(-2);
-            mur.setPortB(2);
+           mur.setPortA(0);
+           mur.setPortB(0);
+           xOk=true;           
            }
-        else {
-            mur.setPortA(0);
-            mur.setPortB(0);
-               xOk=true;
-        }
-        waitKey(1);
-    }
+       if (y>140){//////////
+           mur.setPortC(25);
+           yOk=false;
+           }
+       else if (y<130){
+           mur.setPortC(-5);
+           yOk=false;
+            }
+       else {
+           mur.setPortC(15);
+           yOk=true;         
+           }   
+       }
        if (xOk && yOk){
            toRet=true;
+           mur.shoot();
        }
-       
+   else if(mode=2){
+       if(r>5){
+       toRet = true;
+       cout<<"true"<<endl;
+           }
+       else {toRet=false;
+       cout<<"false"<<endl;
+            }
+       }
        return toRet;        
     }
 }

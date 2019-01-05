@@ -16,17 +16,13 @@ int inint;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //1 - green //2 - black
     int main(){ 
+        init();
         while(true){
-            bool tmp = Aiming();
+            Aiming(2);
             waitKey(1);
-            tmp = Aiming();
-            if (tmp){
-                cout<<"centr!"<<endl;
-                break;
-                }
             }
     cout<<"lul"<<endl;
-    mur.shoot();
+    
 //    int inint;
 //    int show_me;
 //    Timer t;
