@@ -14,17 +14,16 @@ using namespace cv;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //1 - green //2 - black
-       int main(){
-    int inint;
-    int show_me;
-Timer t;
-    t.start();
-    inint = 0;
-    int x = 0;  
+    int main(){
+        int inint= 0;//
+        int show_me;//
+        Timer t;
+        t.start();
+        int x = 0;// 
            
            
-       int nullPos = mur.getYaw();
-       while(true){
+        int nullPos = mur.getYaw();
+        while(true){
         keepDeep(90);
         
         int detected_gate = Gate();
@@ -109,17 +108,22 @@ Timer t;
              waitKey(1);
             }
             mur.drop();
+            mur.setPortA(0);
+            mur.setPortB(0);
+            //определение нахождения мешени 
+            sleepFor(100);
         while(!Aiming(2)){
             keepDeep(80);
-            mur.setPortA(5);
-            mur.setPortB(-5);
+            CCW(3);
             waitKey(1);
             }
         inint = mur.getYaw();
-            t.stop();
+            if (inint>180){x=90;}
+            else{x=-90;}
+            t.stop();//отъезд
             t.start();
-        while(t.elapsed()<(3000)){  
-            keepDeep(90);
+        while(t.elapsed()<(4000)){  
+            keepDeep(80);
             goYaw(inint);
             waitKey(1);
         }
@@ -128,14 +132,70 @@ Timer t;
             goYaw(inint);
             waitKey(1);
             }
+            inint = Angle();
             mur.setPortA(0);
             mur.setPortB(0);
-        while(true){
+        while(true){//целим
             bool tmp=Aiming(1);
             waitKey(1);
             if (tmp)break;
                 }  
             mur.shoot();
+            t.stop();//отъезд
+            t.start();
+        while(t.elapsed()<(1000)){  
+            keepDeep(80);
+            goYaw(inint);
+            waitKey(1);
+            }
+        while(Angle()==1000){//движение до линии 
+            keepDeep(80);
+            goYaw(inint);
+            waitKey(1);
+            }
+        inint=inint+x;//выравнивание вдоль последней линии
+        if(inint>360){
+            inint=inint-360;
+            while(mur.getYaw()>inint){
+                CW(2);
+            }
+        }
+        else if(inint<0){
+            inint=inint+360;
+            while(mur.getYaw()<inint){
+                CCW(2);
+            }
+        }
+         while(true){//последнее
+            keepDeep(90);
+            inint = mur.getYaw();
+            goYaw(inint);
+            inint = Angle();
+            if (inint<360){
+            cout<<"1   "<<inint<<endl;
+                break;}
+            waitKey(1);
+        }
+            cout<<"3   "<<inint<<endl;
+            t.stop();
+            t.start();
+        while(t.elapsed()<(6000)){ 
+            keepDeep(90);
+            goYaw(inint);
+            waitKey(1);
+        }
+            t.stop();
+        while(true){
+            keepDeep(90);
+            bool tmp = Centreting(2);
+            if (tmp){
+                cout<<"centr!"<<endl;
+                break;
+                }    
+            waitKey(1);}
+            mur.setPorts(0,0,-100,0);
+            sleepFor(10000);
+        
         return 0;
         }
     

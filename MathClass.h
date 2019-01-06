@@ -244,9 +244,6 @@ bool Aiming(int mode){/////////////////////////////////////////////////
    } 
    Mat yellow= inPic.clone();
    cvtColor(yellow, yellow, CV_BGR2HSV);
-   int dopPowerA;
-   int dopPowerB;
-   int dopPowerC;
    Scalar using_upper;
    Scalar using_lower;
    Scalar upper_yellow(38,255,255);
@@ -292,42 +289,42 @@ bool Aiming(int mode){/////////////////////////////////////////////////
        if (x>165){
            mur.setPortA(-1);
            mur.setPortB(1);
-           xOk=false;
+           xOk=false;  
            }
        else if (x<155){
            mur.setPortA(1);
            mur.setPortB(-1);
-           xOk=false;
+           xOk=false;  
             }
        else {
            mur.setPortA(0);
            mur.setPortB(0);
-           xOk=true;           
+           xOk=true;             
            }
        if (y>140){//////////
            mur.setPortC(25);
-           yOk=false;
+           yOk=false;  
            }
        else if (y<130){
            mur.setPortC(-5);
-           yOk=false;
+           yOk=false;  
             }
        else {
            mur.setPortC(15);
-           yOk=true;         
+           yOk=true;    
            }   
        }
        if (xOk && yOk){
            toRet=true;
        }
-   else if(mode=2){
+   else if(mode==2){
        if(x<165&&x>155){
            toRet = true;
-           cout<<"true"<<endl;
+           cout<<"2true"<<endl;
            }
        else {
            toRet=false;
-           cout<<"false"<<endl;
+           cout<<"2false"<<endl;
             }
        }
        return toRet;        
