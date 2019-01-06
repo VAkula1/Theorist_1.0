@@ -1,3 +1,0 @@
-Materials/03 - Default.xml
-Materials/Material #53.xml
-Materials/07 - Default.xml

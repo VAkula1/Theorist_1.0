@@ -1,2 +1,0 @@
-Materials/07 - Default.xml
-Materials/03 - Default.xml

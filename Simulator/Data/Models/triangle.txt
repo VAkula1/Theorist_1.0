@@ -1,2 +1,0 @@
-Materials/02 - Default.001.xml
-Materials/03 - Default.001.xml
