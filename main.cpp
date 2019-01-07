@@ -33,7 +33,7 @@ using namespace cv;
                 {
                 CCW(3);
             }
-            else if (detected_gate>180) 
+            else if (detected_gate>185) 
                 {
                 CW(3);
             }
@@ -52,10 +52,10 @@ using namespace cv;
             t.stop();//отъезд от ворот
             t.start();
         while(t.elapsed()<(3000)){  
-            keepDeep(90);
+            keepDeep(80);
             goYaw(nullPos);
         }
-        while(true){//1
+        while(true){//до первой линии
             keepDeep(80);
             goYaw(nullPos);
             inint = Angle();
@@ -64,17 +64,15 @@ using namespace cv;
             if (inint<360){break;}
         }
             
-            cout<<"2   "<<inint<<endl;
-            
-            t.stop();
+            t.stop();//едим до второй линии
             t.start();
         while(t.elapsed()<(3800)){
             keepDeep(90);        
             goYaw(inint);
             waitKey(1);
         }
-        inint = 1000;
-        while(true){//2
+        inint = 1000;//определение второй линии
+        while(true){
             
             if (inint<360){
                 normalizeYaw(inint);
@@ -85,7 +83,7 @@ using namespace cv;
             inint = inint + Angle();
             waitKey(1);
         }
-            cout<<"3   "<<inint<<endl;
+            cout<<"2   "<<inint<<endl;
             t.stop();
             t.start();
         while(t.elapsed()<(3000)){  
@@ -108,18 +106,20 @@ using namespace cv;
              waitKey(1);
             }
             mur.drop();
-            mur.setPortA(0);
-            mur.setPortB(0);
-            //определение нахождения мешени 
-            sleepFor(100);
-        while(!Aiming(2)){
+            
+            //определение места нахождения мешени 
+            
+        while(true){
+            bool tmp = Aiming(2);
             keepDeep(80);
-            CCW(3);
+            CW(10);
+            if (tmp==true){break;}
             waitKey(1);
             }
         inint = mur.getYaw();
             if (inint>180){x=90;}
             else{x=-90;}
+            
             t.stop();//отъезд
             t.start();
         while(t.elapsed()<(4000)){  
@@ -127,12 +127,13 @@ using namespace cv;
             goYaw(inint);
             waitKey(1);
         }
-        while(Angle()==1000){//движение до линии 
+        while(Angle()==1000){//движение до линии 3
             keepDeep(80);
             goYaw(inint);
             waitKey(1);
             }
-            inint = Angle();
+            //int agl3 = Angle();
+            cout<<"3  "<<inint<<endl;
             mur.setPortA(0);
             mur.setPortB(0);
         while(true){//целим
@@ -141,61 +142,26 @@ using namespace cv;
             if (tmp)break;
                 }  
             mur.shoot();
-            t.stop();//отъезд
-            t.start();
-        while(t.elapsed()<(1000)){  
-            keepDeep(80);
-            goYaw(inint);
-            waitKey(1);
-            }
-        while(Angle()==1000){//движение до линии 
-            keepDeep(80);
-            goYaw(inint);
-            waitKey(1);
-            }
-        inint=inint+x;//выравнивание вдоль последней линии
-        if(inint>360){
-            inint=inint-360;
-            while(mur.getYaw()>inint){
-                CW(2);
-            }
-        }
-        else if(inint<0){
-            inint=inint+360;
-            while(mur.getYaw()<inint){
-                CCW(2);
-            }
-        }
-         while(true){//последнее
-            keepDeep(90);
-            inint = mur.getYaw();
-            goYaw(inint);
-            inint = Angle();
+       inint = 1000;//определение линии 3
+        while(true){
+            
             if (inint<360){
-            cout<<"1   "<<inint<<endl;
+                normalizeYaw(inint);
                 break;}
+            inint = mur.getYaw();
+            keepDeep(90);
+            goYaw(inint);
+            inint = inint + Angle();
             waitKey(1);
         }
             cout<<"3   "<<inint<<endl;
             t.stop();
             t.start();
-        while(t.elapsed()<(6000)){ 
+        while(t.elapsed()<(3000)){  
             keepDeep(90);
             goYaw(inint);
             waitKey(1);
         }
-            t.stop();
-        while(true){
-            keepDeep(90);
-            bool tmp = Centreting(2);
-            if (tmp){
-                cout<<"centr!"<<endl;
-                break;
-                }    
-            waitKey(1);}
-            mur.setPorts(0,0,-100,0);
-            sleepFor(10000);
-        
         return 0;
         }
     

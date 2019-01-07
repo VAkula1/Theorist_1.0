@@ -22,8 +22,7 @@ using namespace cv;
         }
     
 }
-    
-    
+
     void keepDeep(int wish){ 
     float delta; 
     int controlD; 
@@ -86,7 +85,7 @@ int Angle(){
    } 
    Mat red= inPic.clone();
    cvtColor(red, red, CV_BGR2HSV);
-   Scalar upper_red(25,255,255);
+   Scalar upper_red(11,255,255);//25..
    Scalar lower_red(0,20,0);
    
    inRange(red,lower_red,upper_red,red);
@@ -125,8 +124,7 @@ int Angle(){
            if(angle>90){toRet=angle+180;}
            else{toRet=angle;}
                             }
-       else {toRet=1000;
-               }
+       else {toRet=1000;}
                  
     }
     return toRet;
@@ -193,8 +191,8 @@ bool GateBool(){
    } 
    Mat green= inPic.clone();
    cvtColor(green, green, CV_BGR2HSV);
-   Scalar upper_green(100,255,255);
-   Scalar lower_green(42,61,95);
+   Scalar upper_green(100,255,255);//100.255.255
+   Scalar lower_green(42,61,95);//42.61.95
    
    inRange(green,lower_green,upper_green,green);
    GaussianBlur(green, green, Size(5, 5), 2);
@@ -255,32 +253,35 @@ bool Aiming(int mode){/////////////////////////////////////////////////
    inRange(yellow,using_lower,using_upper,yellow);
    GaussianBlur(yellow, yellow, Size(5, 5), 2);
    
-   imshow("Centreting",yellow);
+   imshow("Aiming",yellow);
    vector < vector <Point>> contours;
    findContours(yellow,contours,CV_RETR_TREE,CV_CHAIN_APPROX_NONE);
    
    
-   for (size_t i=0;i<contours.size();i++){
-       if (contours.at(i).size() < 5) {
+    for (size_t i=0;i<contours.size();i++){
+        if (contours.at(i).size() < 5) {
             continue;
         }
-       vector<Point> hull;
-       convexHull(contours[i],hull,true);
-       approxPolyDP(hull,hull,15,true);
+        vector<Point> hull;
+        convexHull(contours[i],hull,true);
+        approxPolyDP(hull,hull,15,true);
         
-       RotatedRect bEllipse = fitEllipse(contours.at(i));
-       Rect rect = boundingRect(contours[i]);
-       int x = (int)bEllipse.center.x;
-       int y = (int)bEllipse.center.y;
-       int r = (int)rect.width/2;
+        RotatedRect bEllipse = fitEllipse(contours.at(i));
+        Rect rect = boundingRect(contours[i]);
+        int x = (int)bEllipse.center.x;
+        int y = (int)bEllipse.center.y;
+        int r = (int)rect.width/2;
        //int angle =bEllipse.angle;
        
         
-       if (hull.size()<8){
-           putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
-       drawContours(inPic,contours,i,Scalar(255,0,0),4);
-          putText( inPic, "y :"+std::to_string(y), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+        if (hull.size()<8){
+            putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+        drawContours(inPic,contours,i,Scalar(255,0,0),4);
+            putText( inPic, "y :"+std::to_string(y), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
        //drawContours(inPic,contours,i,Scalar(255,0,0),4);
+            vector<Point> hull;
+            convexHull(contours[i],hull,true);
+            approxPolyDP(hull,hull,15,true);
        } 
        bool xOk=false;
        bool yOk=false;
@@ -289,7 +290,7 @@ bool Aiming(int mode){/////////////////////////////////////////////////
        if (x>165){
            mur.setPortA(-1);
            mur.setPortB(1);
-           xOk=false;  
+           xOk=false;
            }
        else if (x<155){
            mur.setPortA(1);
@@ -299,11 +300,11 @@ bool Aiming(int mode){/////////////////////////////////////////////////
        else {
            mur.setPortA(0);
            mur.setPortB(0);
-           xOk=true;             
+           xOk=true;
            }
        if (y>140){//////////
            mur.setPortC(25);
-           yOk=false;  
+           yOk=false;
            }
        else if (y<130){
            mur.setPortC(-5);
@@ -313,22 +314,21 @@ bool Aiming(int mode){/////////////////////////////////////////////////
            mur.setPortC(15);
            yOk=true;    
            }   
-       }
+       
        if (xOk && yOk){
            toRet=true;
+           }
        }
    else if(mode==2){
        if(x<165&&x>155){
            toRet = true;
-           cout<<"2true"<<endl;
            }
        else {
            toRet=false;
-           cout<<"2false"<<endl;
             }
-       }
-       return toRet;        
+       }         
     }
+    return toRet; 
 }
 bool Centreting(int mode){
    bool toRet=false;
