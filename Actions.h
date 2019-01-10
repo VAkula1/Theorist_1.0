@@ -84,8 +84,8 @@ void Action2(){
             goYaw(inint);
             waitKey(1);
         }
-        while(BasketBool()!=true){//подъезд и сброс 
-            keepDeep(110);
+        while(BasketInt()==0){//подъезд и сброс 
+            keepDeep(100);
             goYaw(inint);
             waitKey(1);
             }

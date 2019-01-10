@@ -13,17 +13,18 @@ using namespace std;
 using namespace cv;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //1 - green //2 - black
+    //Centreting//1-green//2-black//3-red//4-white
     int main(){
         int inint= 0;//
-        int show_me;//
+        int show_my_place;//
         Timer t;
         t.start();
         int x = 0;// 
            
            
         int nullPos = mur.getYaw();
-        while(true){
+        init();
+        /*while(true){
         keepDeep(90);
         
         int detected_gate = Gate();
@@ -46,7 +47,7 @@ using namespace cv;
         }
     }
         while(GateBool()){//к воротам
-            keepDeep(80);
+            keepDeep(70);
             goYaw(x);
         }
             t.stop();//отъезд от ворот
@@ -66,7 +67,7 @@ using namespace cv;
             
             t.stop();//едим до второй линии
             t.start();
-        while(t.elapsed()<(3800)){
+        while(t.elapsed()<(3500)){
             keepDeep(90);        
             goYaw(inint);
             waitKey(1);
@@ -82,6 +83,7 @@ using namespace cv;
             goYaw(inint);
             inint = inint + Angle();
             waitKey(1);
+                cout<<"2   "<<inint<<endl;
         }
             cout<<"2   "<<inint<<endl;
             t.stop();
@@ -91,77 +93,117 @@ using namespace cv;
             goYaw(inint);
             waitKey(1);
         }
-        while(BasketBool()!=true){//подъезд и сброс 
-            keepDeep(110);
+        while(true){//подъезд и сброс 
+            keepDeep(100);
             goYaw(inint);
+            show_my_place=BasketInt();
             waitKey(1);
+            if(show_my_place!=0){break;}
             }
         while(true){
-            keepDeep(110);
+            keepDeep(60);
+            bool tmp = Centreting(4);
+            if (tmp){
+                cout<<"white centr!"<<endl;
+                break;
+                }    
+             waitKey(1);
+            }   
+            
+        while(true){
+            bool tyaw;
+            tyaw = LookYaw(inint);
+            keepDeep(80);
+            if(tyaw){break;}
+            waitKey(1);
+            }
+            show_my_place=BasketInt();
+            cout<<"show_my_place: "<<show_my_place<<endl;
+        while(true){
+            keepDeep(100);
             bool tmp = Centreting(1);
             if (tmp){
-                cout<<"centr!"<<endl;
+                cout<<"green centr!"<<endl;
                 break;
                 }    
              waitKey(1);
             }
             mur.drop();
             
-            //определение места нахождения мешени 
+            //определение места нахождения мешени
             
         while(true){
             bool tmp = Aiming(2);
             keepDeep(80);
             CW(10);
-            if (tmp==true){break;}
+            if (tmp==true){
+                if (mur.getYaw()>180){x=90;}
+                else{x=-90;}
+                break;
+                }
             waitKey(1);
             }
-        inint = mur.getYaw();
-            if (inint>180){x=90;}
-            else{x=-90;}
-            
-            t.stop();//отъезд
-            t.start();
-        while(t.elapsed()<(4000)){  
+            cout<<"x: "<<x<<endl;
+            if ((x<0&&show_my_place==-1)||(x>0&&show_my_place==1)){//переходим на темную сторону
+                    while(true){
+                        keepDeep(100);
+                        bool tmp = Centreting(3);
+                        if (tmp){
+                            cout<<"red centr!"<<endl;
+                            break;
+                            }    
+                        waitKey(1);
+                        }
+                }
+        t.stop();
+        t.start();
+        while(t.elapsed()<(7000)){//направить курс по линии 2
+            bool tyaw;
+            tyaw = LookYaw(inint);
             keepDeep(80);
+            waitKey(1);
+            }
+        t.stop();
+        t.start();
+        while(t.elapsed()<(1000)){
+            keepDeep(90);        
             goYaw(inint);
             waitKey(1);
         }
-        while(Angle()==1000){//движение до линии 3
-            keepDeep(80);
-            goYaw(inint);
-            waitKey(1);
-            }
-            //int agl3 = Angle();
-            cout<<"3  "<<inint<<endl;
-            mur.setPortA(0);
-            mur.setPortB(0);
-        while(true){//целим
-            bool tmp=Aiming(1);
-            waitKey(1);
-            if (tmp)break;
-                }  
-            mur.shoot();
-       inint = 1000;//определение линии 3
+
+        inint=1000;        //определение линии 3
         while(true){
             
             if (inint<360){
                 normalizeYaw(inint);
                 break;}
             inint = mur.getYaw();
-            keepDeep(90);
+            keepDeep(110);
             goYaw(inint);
-            inint = inint + Angle();
+            inint = Angle();
             waitKey(1);
+                cout<<"затуп"<<inint<<endl;
         }
             cout<<"3   "<<inint<<endl;
-            t.stop();
-            t.start();
-        while(t.elapsed()<(3000)){  
-            keepDeep(90);
-            goYaw(inint);
+        
+        t.stop();
+        t.start();
+        while(t.elapsed()<(4000)){//направить курс по линии 3
+            bool tyaw;
+            tyaw = LookYaw(inint);
+            keepDeep(80);
             waitKey(1);
-        }
+            }*/
+       
+            mur.setPortA(0);
+            mur.setPortB(0);
+        while(true){//целим
+            bool tmp=Aiming(1);
+            waitKey(1);
+            if (tmp)break;
+                } 
+            mur.shoot();
+       sleepFor(1000);
         return 0;
         }
     
