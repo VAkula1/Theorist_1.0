@@ -16,6 +16,7 @@ using namespace cv;
     //Centreting//1-green//2-black//3-red//4-white
     int main(){
         init();
+        int dopYaw;
         int inint= 0;//
         int show_my_place;//
         Timer t;
@@ -164,9 +165,24 @@ using namespace cv;
             keepDeep(80);
             waitKey(1);
             }
+        
         t.stop();
         t.start();
         while(t.elapsed()<(1000)){
+            keepDeep(90);        
+            goYaw(inint-x);
+            waitKey(1);
+        }
+        while(t.elapsed()<(2000)){
+            bool tyaw;
+            tyaw = LookYaw(inint);
+            keepDeep(80);
+            waitKey(1);
+            }
+        
+        t.stop();
+        t.start();
+        while(t.elapsed()<(100)){
             keepDeep(90);        
             goYaw(inint);
             waitKey(1);
@@ -174,7 +190,6 @@ using namespace cv;
 
         inint=1000;        //определение линии 3
         while(true){
-            
             if (inint<1000){
                 inint = normalizeYaw(inint);
                 break;}

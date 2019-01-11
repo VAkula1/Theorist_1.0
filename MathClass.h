@@ -371,8 +371,8 @@ bool Centreting(int mode){
    Scalar using_upper;
    Scalar using_lower;
    
-   Scalar upper_red(11,255,255);//25..
-   Scalar lower_red(0,20,0);
+   Scalar upper_red(0,255,130);//25..
+   Scalar lower_red(0,255,100);
    
    Scalar upper_green(100,255,255);
    Scalar lower_green(42,61,95);
