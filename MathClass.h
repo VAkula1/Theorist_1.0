@@ -11,13 +11,13 @@ using namespace cv;
     //mur.initCamera(1);
     Mat img= mur.getCameraOneFrame();
     sleepFor(100);
-    for (int i=0 ;i<5;i++){
+    for (int i=0 ;i<10;i++){
         img= mur.getCameraOneFrame();  
         }
     //mur.initCamera(2);
     img= mur.getCameraTwoFrame();
     sleepFor(100);
-    for (int i=0 ;i<5;i++){
+    for (int i=0 ;i<10;i++){
         img= mur.getCameraTwoFrame();  
         }
     
@@ -247,7 +247,7 @@ bool Aiming(int mode){/////////////////////////////////////////////////
    Scalar using_upper;
    Scalar using_lower;
    Scalar upper_yellow(38,255,255);
-   Scalar lower_yellow(27,149,144);
+   Scalar lower_yellow(27,149,89);
    
    using_upper=upper_yellow;
    using_lower=lower_yellow;
@@ -256,8 +256,11 @@ bool Aiming(int mode){/////////////////////////////////////////////////
    GaussianBlur(yellow, yellow, Size(5, 5), 2);
    
    imshow("Aiming",yellow);
+   waitKey(1);
    vector < vector <Point>> contours;
    findContours(yellow,contours,CV_RETR_TREE,CV_CHAIN_APPROX_NONE);
+   
+   int rR = 0;
    
     for (size_t i=0;i<contours.size();i++){
         if (contours.at(i).size() < 5) {
@@ -273,17 +276,15 @@ bool Aiming(int mode){/////////////////////////////////////////////////
         int y = (int)bEllipse.center.y;
         int r = (int)rect.width/2;
        //int angle =bEllipse.angle;
-       
+        if (i==0) rR = r;
         
         if (hull.size()<8){
-            putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+            //putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
         drawContours(inPic,contours,i,Scalar(255,0,0),4);
-            putText( inPic, "y :"+std::to_string(y), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
-            putText( inPic, "r :"+std::to_string(r), Point(50,140), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
-       //drawContours(inPic,contours,i,Scalar(255,0,0),4);
-            vector<Point> hull;
-            convexHull(contours[i],hull,true);
-            approxPolyDP(hull,hull,15,true);
+            //putText( inPic, "y :"+std::to_string(y), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+            putText( inPic, "rR :"+std::to_string(rR), Point(50,200), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+       drawContours(inPic,contours,i,Scalar(255,0,0),4);
+            
        } 
    
        bool xOk=false;
@@ -292,73 +293,69 @@ bool Aiming(int mode){/////////////////////////////////////////////////
        int dopPowerA;
        int dopPowerB;
        imshow("inPic",inPic);
-   if(r>5&&mode==1){
-       if(r>28){
-           dopPowerA=3;
-           dopPowerB=3;
-           lOk=false;
-           }
-       else if(r<32){
+   if(rR>5&&mode==1){
+       if(rR<28){
            dopPowerA=-3;
            dopPowerB=-3;
+           lOk=false;
+           }
+       else if(rR>32){
+           dopPowerA=3;
+           dopPowerB=3;
            lOk=false;
            }
        else{
            dopPowerA=0;
            dopPowerB=0; 
            lOk=true;  
-           cout<<"lOk=true; "<<endl; 
            }
            
            
-       if (y>130){//////////
-           mur.setPortC(30);
+       if (y<130){//////////
+           mur.setPortC(-5);
            yOk=false;
            }
-       else if (y<140){
-           mur.setPortC(-5);
+       else if (y>140){
+           mur.setPortC(30);
            yOk=false;  
             }
        else {
            mur.setPortC(18);
-           yOk=true; 
-           cout<<"yOk=true; "<<endl;  
+           yOk=true;  
            }  
            
            
-       if (x>155){////////////
-           mur.setPortA(-1+dopPowerA);
-           mur.setPortB(1+dopPowerB);
-           xOk=false;
-           }
-       else if (x<165){
+       if (x<155){////////////
            mur.setPortA(1+dopPowerA);
            mur.setPortB(-1+dopPowerB);
+           xOk=false;
+           }
+       else if (x>165){
+           mur.setPortA(-1+dopPowerA);
+           mur.setPortB(1+dopPowerB);
            xOk=false;  
             }
        else {
            mur.setPortA(0+dopPowerA);
            mur.setPortB(0+dopPowerB);
            xOk=true;
-           cout<<"xOk=true;aw"<<endl;
            }
            
        if (xOk && yOk && lOk){
-           cout<<"zatup"<<endl;
             toRet=true;
            }
        }
    else if(mode==2){
-       if(x<165&&x>155){
+       if(x<170&&x>150){
            toRet = true;
            }
        else {
            toRet=false;
             }
        }         
-    
-    return toRet; 
+     
    }
+    return toRet;
 }
 bool Centreting(int mode){
    bool toRet=false;
@@ -401,6 +398,11 @@ bool Centreting(int mode){
        using_upper=upper_white;
        using_lower=lower_white;
        }
+  /* else if (mode == 5){
+       using_upper=upper_black;
+       using_lower=lower_black;
+       }*/
+       
    inRange(green,using_lower,using_upper,green);
    GaussianBlur(green, green, Size(5, 5), 2);
    
@@ -418,10 +420,10 @@ bool Centreting(int mode){
        approxPolyDP(hull,hull,15,true);
         
        RotatedRect bEllipse = fitEllipse(contours.at(i));
-       //Rect rect = boundingRect(contours[i]);
+       Rect rect = boundingRect(contours[i]);
        int x = (int)bEllipse.center.x;
        int y = (int)bEllipse.center.y;
-       //int r = (int)rect.width/2;
+       int r = (int)rect.width/2;
        //int angle =bEllipse.angle;
         
         
@@ -434,41 +436,105 @@ bool Centreting(int mode){
        bool xOk=false;
        bool yOk=false;
        imshow("inPic",inPic);
-       if (x<135){
-           dopPowerA=15;
-           dopPowerB=-15;
-           xOk=false;
-       }
-       else if (x>185){
-           dopPowerA=-15;
-           dopPowerB=15;
-           xOk=false;   
+       
+           if (x<145){
+               dopPowerA=15;
+               dopPowerB=-15;
+               xOk=false;
            }
-       else {
-               dopPowerA=0;
-               dopPowerB=0;
-               xOk=true;
-                          }
-           if (y<115){
-           mur.setPortA(-5+dopPowerA);
-           mur.setPortB(-5+dopPowerB);
-           yOk=false;
-       }
-       else if (y>125){
-            mur.setPortA(5+dopPowerA);
-           mur.setPortB(5+dopPowerB);
-           yOk=false;   
-           }
+           else if (x>175){
+               dopPowerA=-15;
+               dopPowerB=15;
+               xOk=false;   
+               }
            else {
-               
-               yOk=true;
-                          }
-       if (xOk && yOk){
-           toRet=true;
-       }
-       return toRet;
+                   dopPowerA=0;
+                   dopPowerB=0;
+                   xOk=true;
+                              }
+               if (y<115){
+               mur.setPortA(-5+dopPowerA);
+               mur.setPortB(-5+dopPowerB);
+               yOk=false;
+           }
+           else if (y>125){
+               mur.setPortA(5+dopPowerA);
+               mur.setPortB(5+dopPowerB);
+               yOk=false;   
+               }
+           else {
+                   yOk=true;
+                              }
+           if (xOk && yOk){
+               toRet=true;
+           }
+   
+      /* else if(mode==5){
+           if(r>5) toRet = true;
+           else toRet = false;
+           }*/
+       
     }       
-    
+    return toRet;
+}
+
+
+bool BlackC(){
+   bool toRet=false;
+    Mat inPic = mur.getCameraOneFrame();
+   if (inPic.empty()){
+      cerr<<"Image empty"<<endl;
+      toRet=false;
+   } 
+   Mat green= inPic.clone();
+   cvtColor(green, green, CV_BGR2HSV);
+   int dopPowerA;
+   int dopPowerB;
+   Scalar using_upper;
+   Scalar using_lower;
+   
+   Scalar upper_black(255,255,13);
+   Scalar lower_black(0,0,0);
+   
+       using_upper=upper_black;
+       using_lower=lower_black;
+   
+       
+   inRange(green,using_lower,using_upper,green);
+   GaussianBlur(green, green, Size(5, 5), 2);
+   
+   imshow("Centreting",green);
+   vector < vector <Point>> contours;
+   findContours(green,contours,CV_RETR_TREE,CV_CHAIN_APPROX_NONE);
+   
+   
+   for (size_t i=0;i<contours.size();i++){
+       if (contours.at(i).size() < 5) {
+            continue;
+        }
+       vector<Point> hull;
+       convexHull(contours[i],hull,true);
+       approxPolyDP(hull,hull,15,true);
+        
+       RotatedRect bEllipse = fitEllipse(contours.at(i));
+       Rect rect = boundingRect(contours[i]);
+       //int x = (int)bEllipse.center.x;
+       //int y = (int)bEllipse.center.y;
+       int r = (int)rect.width/2;
+       //int angle =bEllipse.angle;
+        
+        
+       if (hull.size()<8){
+          //putText( inPic, "x :"+std::to_string(x), Point(50,180), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+       drawContours(inPic,contours,i,Scalar(255,0,0),4);
+          //putText( inPic, "y :"+std::to_string(y), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
+       //drawContours(inPic,contours,i,Scalar(255,0,0),4);
+       }
+       imshow("inPic",inPic);
+       if(r>5)toRet=true;
+       else toRet=false;
+    }
+    return toRet;
 }
     int Gate(){
     Mat image = mur.getCameraTwoFrame();
@@ -529,7 +595,7 @@ bool Centreting(int mode){
 
     bool LookYaw(int tyaw){
         bool toRet=false;
-        float k = 0.20;
+        float k = 0.30;
         int cyaw = mur.getYaw();
         int err = tyaw-cyaw; 
         if (err<-180){ 
@@ -537,10 +603,12 @@ bool Centreting(int mode){
         } 
         else if (err > 180){ 
             err = (360- err)*(-1); 
-        } 
+        }
+        if (err < 3 && err > 0) err = 3;
+        if (err > -3 && err < 0) err = -3;
         int pA = err*k;
         int pB = -err*k;
-
+        
         mur.setPortA(pA*(-1)); 
         mur.setPortB(pB*(-1)); 
         if (cyaw==tyaw){
