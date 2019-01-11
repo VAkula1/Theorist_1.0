@@ -162,7 +162,7 @@ using namespace cv;
         while(t.elapsed()<(7000)){
             bool tyaw;
             tyaw = LookYaw(inint-x);
-            keepDeep(80);
+            keepDeep(90);
             waitKey(1);
             }
         
@@ -176,13 +176,13 @@ using namespace cv;
         while(t.elapsed()<(7000)){
             bool tyaw;
             tyaw = LookYaw(inint);
-            keepDeep(80);
+            keepDeep(90);
             waitKey(1);
             }
         
         t.stop();
         t.start();
-        while(t.elapsed()<(100)){
+        while(t.elapsed()<(50)){
             keepDeep(90);        
             goYaw(inint);
             waitKey(1);
@@ -193,7 +193,7 @@ using namespace cv;
             if (inint<1000){
                 inint = normalizeYaw(inint);
                 break;}
-            keepDeep(90);
+            keepDeep(100);
             inint = mur.getYaw();
             goYaw(inint);
             inint = Angle();
@@ -209,7 +209,7 @@ using namespace cv;
         while(true){
             bool tmp = Aiming(2);
             waitKey(10);
-            keepDeep(80);
+            keepDeep(60);
             CW(7);
             if (tmp==true){
                 cout<<"aiming(2)"<<endl;
@@ -237,8 +237,8 @@ using namespace cv;
             }
         t.stop();//едим до линии 3
         t.start();
-        while(t.elapsed()<(2000)){
-            keepDeep(90);        
+        while(t.elapsed()<(1000)){
+            keepDeep(70);        
             goYaw(inint);
             waitKey(1);
         }
@@ -248,7 +248,7 @@ using namespace cv;
             if (inint<1000){
                 inint = normalizeYaw(inint+180);
                 break;}
-            keepDeep(110);
+            keepDeep(60);
             inint = mur.getYaw();
             goYaw(inint);
             inint = inint + Angle();
@@ -261,7 +261,7 @@ using namespace cv;
         while(t.elapsed()<(7000)){
             bool tyaw;
             tyaw = LookYaw(inint);
-            keepDeep(80);
+            keepDeep(60);
             waitKey(1);
             }
         //плыть по линии 4

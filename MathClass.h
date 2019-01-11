@@ -28,9 +28,9 @@ using namespace cv;
     int controlD; 
     if (mur.getInputAOne()<40) {
         mur.setPortC(100);
-        cout<<"ebac deep"<<endl;}
+        cout<<"!!! deep !!!"<<endl;}
     else {delta = wish - mur.getInputAOne(); 
-    delta = delta * 8; 
+    delta = delta * 5; 
     controlD = (int)delta; 
     mur.setPortC(controlD);}
 	sleepFor(5);
@@ -123,7 +123,7 @@ int Angle(){
        }
        imshow("inPic",inPic);
        
-       if (((y>110)&&(y<130))&&(hull.size()>2)){
+       if (((y>110)&&(y<140))&&(hull.size()>2)){
            if(angle>90){toRet=angle+180;}
            else{toRet=angle;}
                             }
@@ -329,9 +329,13 @@ bool Aiming(int mode){/////////////////////////////////////////////////
                yOk=true;  
                }  
        }
+       else if(mur.getInputAOne()<40&&mur.getInputAOne()>31){
+           mur.setPortC(70);
+           cout<<"!"<<endl;
+           }
        else{
            mur.setPortC(100);
-           cout<<"ebac aim"<<endl;
+           cout<<"!!!"<<endl;
            }
        
        if (x<155){////////////
