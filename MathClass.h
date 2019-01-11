@@ -26,7 +26,7 @@ using namespace cv;
     void keepDeep(int wish){ 
     float delta; 
     int controlD; 
-    if (mur.getInputAOne()<35) mur.setPortC(100);
+    if (mur.getInputAOne()<40) mur.setPortC(100);
     delta = wish - mur.getInputAOne(); 
     delta = delta * 8; 
     controlD = (int)delta; 
@@ -312,7 +312,7 @@ bool Aiming(int mode){/////////////////////////////////////////////////
            }
            
            
-       if(mur.getInputAOne()>35) {
+       if(mur.getInputAOne()>40) {
            if (y<130){//////////
                mur.setPortC(-5);
                yOk=false;

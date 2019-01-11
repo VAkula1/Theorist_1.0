@@ -90,7 +90,7 @@ using namespace cv;
             t.stop();
             t.start();
         while(t.elapsed()<(3000)){  
-            keepDeep(90);
+            keepDeep(60);
             goYaw(inint);
             waitKey(1);
         }
@@ -137,7 +137,7 @@ using namespace cv;
             bool tmp1 = false;
             tmp1 = Aiming(2);
             keepDeep(80);
-            CW(10);
+            CW(7);
             if (tmp1){
                 if (mur.getYaw()>180){x=90;}
                 else{x=-90;}
@@ -210,7 +210,7 @@ using namespace cv;
             bool tmp = Aiming(2);
             waitKey(10);
             keepDeep(80);
-            CW(10);
+            CW(7);
             if (tmp==true){
                 cout<<"aiming(2)"<<endl;
                 break;
