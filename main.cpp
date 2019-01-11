@@ -173,7 +173,7 @@ using namespace cv;
             goYaw(inint-x);
             waitKey(1);
         }
-        while(t.elapsed()<(4500)){
+        while(t.elapsed()<(7000)){
             bool tyaw;
             tyaw = LookYaw(inint);
             keepDeep(80);
@@ -235,7 +235,13 @@ using namespace cv;
             keepDeep(80);
             waitKey(1);
             }
-        
+        t.stop();//едим до линии 3
+        t.start();
+        while(t.elapsed()<(2000)){
+            keepDeep(90);        
+            goYaw(inint);
+            waitKey(1);
+        }
         inint=1000;        //определение линии 4
         while(true){
             

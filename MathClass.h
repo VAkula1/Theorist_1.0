@@ -28,8 +28,7 @@ using namespace cv;
     int controlD; 
     if (mur.getInputAOne()<40) {
         mur.setPortC(100);
-        cout<<"ebac deep"<<endl;
-        }
+        cout<<"ebac deep"<<endl;}
     else {delta = wish - mur.getInputAOne(); 
     delta = delta * 8; 
     controlD = (int)delta; 
