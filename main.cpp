@@ -103,9 +103,9 @@ using namespace cv;
             }
         while(true){
             keepDeep(60);
-            bool tmp = Centreting(4);
+            bool tmp = Centreting(3);
             if (tmp){
-                cout<<"white centr!"<<endl;
+                cout<<"red centr!"<<endl;
                 break;
                 }    
              waitKey(1);
@@ -168,12 +168,12 @@ using namespace cv;
         
         t.stop();
         t.start();
-        while(t.elapsed()<(1000)){
+        while(t.elapsed()<(1200)){
             keepDeep(90);        
             goYaw(inint-x);
             waitKey(1);
         }
-        while(t.elapsed()<(2000)){
+        while(t.elapsed()<(4500)){
             bool tyaw;
             tyaw = LookYaw(inint);
             keepDeep(80);
@@ -193,7 +193,7 @@ using namespace cv;
             if (inint<1000){
                 inint = normalizeYaw(inint);
                 break;}
-            keepDeep(110);
+            keepDeep(90);
             inint = mur.getYaw();
             goYaw(inint);
             inint = Angle();

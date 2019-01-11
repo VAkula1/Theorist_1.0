@@ -26,11 +26,14 @@ using namespace cv;
     void keepDeep(int wish){ 
     float delta; 
     int controlD; 
-    if (mur.getInputAOne()<40) mur.setPortC(100);
-    delta = wish - mur.getInputAOne(); 
+    if (mur.getInputAOne()<40) {
+        mur.setPortC(100);
+        cout<<"ebac deep"<<endl;
+        }
+    else {delta = wish - mur.getInputAOne(); 
     delta = delta * 8; 
     controlD = (int)delta; 
-    mur.setPortC(controlD);
+    mur.setPortC(controlD);}
 	sleepFor(5);
     }
     
@@ -327,7 +330,10 @@ bool Aiming(int mode){/////////////////////////////////////////////////
                yOk=true;  
                }  
        }
-       else{mur.setPortC(100);}
+       else{
+           mur.setPortC(100);
+           cout<<"ebac aim"<<endl;
+           }
        
        if (x<155){////////////
            mur.setPortA(1+dopPowerA);
