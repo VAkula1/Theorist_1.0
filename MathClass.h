@@ -168,11 +168,11 @@ int BasketInt(){
        int r = (int)rect.width/2;
        //int angle =bEllipse.angle;
         
-        
         if (hull.size()<8){
             putText( inPic, "r :"+std::to_string(r), Point(50,160), FONT_HERSHEY_SIMPLEX, 1,Scalar(0, 255, 0), 2, 8 );
         drawContours(inPic,contours,i,Scalar(255,0,0),4);
         }
+        cout<<"r: "<<r<<" i: "<<i<<endl;
         imshow("inPic",inPic);
        
         if (y>20){

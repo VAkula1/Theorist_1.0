@@ -161,7 +161,7 @@ using namespace cv;
         t.start();
         while(t.elapsed()<(7000)){
             bool tyaw;
-            tyaw = LookYaw(inint);
+            tyaw = LookYaw(inint-x);
             keepDeep(80);
             waitKey(1);
             }
