@@ -95,7 +95,7 @@ using namespace cv;
             waitKey(1);
         }
         while(true){//подъезд и сброс 
-            keepDeep(100);
+            keepDeep(60);
             goYaw(inint);
             show_my_place=BasketInt();
             waitKey(1);
